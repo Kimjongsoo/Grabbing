@@ -3,11 +3,13 @@ package com.example.soo.grabbing;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Button btnConnect = findViewById(R.id.btnConnect); //연결시도
-        btnConnect.setOnClickListener(new View.OnClickListener() {
+        btnConnect.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 i=0;
 //                bt.send("a", true);
@@ -97,8 +99,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        ImageButton Game1=(ImageButton)findViewById(R.id.game1);
-//        Game1
+        ImageButton Game1=(ImageButton)findViewById(R.id.game1);
+        Game1.setOnClickListener(new OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),RhythmGame.class);
+                startActivity(intent);
+            }
+        });
+
+        Button rhybtn=(Button)findViewById(R.id.rhythm_start);
+        rhybtn.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),RhythmGame.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void onDestroy() {
@@ -133,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnSend2 = findViewById(R.id.btnSend2);
         final EditText textinfo =findViewById(R.id.textinfo);
 
-        btnSend2.setOnClickListener(new View.OnClickListener(){
+        btnSend2.setOnClickListener(new OnClickListener(){
             public void onClick(View v) {
                 bt.send(textinfo.getText().toString(),true);
             }
