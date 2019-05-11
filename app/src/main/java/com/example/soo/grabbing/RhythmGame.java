@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
@@ -175,11 +176,12 @@ class ViewEx extends View
     private Paint greenPaint =new Paint();
     private Paint condition=new Paint();
     private Paint rnqns=new Paint();
+    private Paint scorePaint=new Paint();
     private int fishX=10;
     private int fishY;
     Bitmap icon=BitmapFactory.decodeResource(getResources(),R.drawable.sw);
     private Bitmap life[] = new Bitmap[2];
-    private int score, lifeCounterOfFish;
+    private int score, lifeCounter,scorecheck;
     private boolean touch=false;
 //    private RhythmGame rhythmGame;
 
@@ -196,10 +198,17 @@ class ViewEx extends View
         rnqns.setColor(Color.YELLOW);
         rnqns.setAntiAlias(false);
 
+        scorePaint.setColor(Color.BLACK);
+        scorePaint.setTextSize(70);
+        scorePaint.setTypeface(Typeface.DEFAULT_BOLD);
+        scorePaint.setAntiAlias(true);
+
         life[0] = BitmapFactory.decodeResource(getResources(),R.drawable.hearts);
         life[1] = BitmapFactory.decodeResource(getResources(),R.drawable.heart_grey);
         score=0;
-        lifeCounterOfFish =3;
+        scorecheck=0;
+
+        lifeCounter =3;
 
 
 
@@ -226,6 +235,12 @@ class ViewEx extends View
         greenY=greenY +greenSpeed;
         if(greenY >canvasHeight+30)
         {
+            if(scorecheck!=score-10) {
+                lifeCounter--;
+
+            }
+            else  scorecheck += 10;
+
             greenY=0;
 //
 //            int random=(int)Math.floor(Math.random() *(canvasWidth));
@@ -257,6 +272,7 @@ class ViewEx extends View
             if(hitrhythmChecker(greenX,greenY)){
                 condition.setColor(Color.GREEN);
                 canvas.drawCircle(50,canvasHeight-650,57,condition);
+                score=score +10;
             }
             touch=false;
         }
@@ -266,6 +282,21 @@ class ViewEx extends View
             touch =false;
         }
 
+        for(int i=0; i<3; i++)
+        {
+            int x= (int) (580+life[0].getWidth() *1.5 *i);
+            int y= 30;
+
+            if(i<lifeCounter)
+            {
+                canvas.drawBitmap(life[0], x,y,null);
+
+            }
+            else {
+                canvas.drawBitmap(life[1], x,y,null);
+            }
+        }
+        canvas.drawText("Score : "+score, 20, 60, scorePaint);
     }
 
 
