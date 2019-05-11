@@ -18,10 +18,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewDebug;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,11 +39,17 @@ public class RhythmGame extends AppCompatActivity {
     private int fishY;
     private Handler handler=new Handler();
     private final  static long Interval = 30;
+//    DisplayMetrics dm;
+//    public int dwidth;
+//    public int dheight;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final ViewEx viewEx = new ViewEx(this);
         setContentView(viewEx);
+//        dm = getApplicationContext().getResources().getDisplayMetrics();
+//        dwidth = dm.widthPixels;
+//        dheight = dm.heightPixels;
         Timer timer=new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -163,15 +173,44 @@ class ViewEx extends View
     private int canvasWidth, canvasHeight;
     private int greenX,greenY, greenSpeed=15;
     private Paint greenPaint =new Paint();
+    private Paint condition=new Paint();
+    private Paint rnqns=new Paint();
     private int fishX=10;
     private int fishY;
     Bitmap icon=BitmapFactory.decodeResource(getResources(),R.drawable.sw);
     private Bitmap life[] = new Bitmap[2];
+    private int score, lifeCounterOfFish;
+    private boolean touch=false;
+//    private RhythmGame rhythmGame;
+
+
     public ViewEx(Context context)
     {
         super(context);
         greenPaint.setColor(Color.GREEN);
         greenPaint.setAntiAlias(false);
+
+        condition.setColor(Color.RED);
+        condition.setAntiAlias(false);
+
+        rnqns.setColor(Color.YELLOW);
+        rnqns.setAntiAlias(false);
+
+        life[0] = BitmapFactory.decodeResource(getResources(),R.drawable.hearts);
+        life[1] = BitmapFactory.decodeResource(getResources(),R.drawable.heart_grey);
+        score=0;
+        lifeCounterOfFish =3;
+
+
+
+
+        Random ran=new Random();
+        int rnum=ran.nextInt(3);
+        
+
+        if(rnum==0) greenX=115;
+        else if(rnum==1) greenX=475;
+        else if(rnum==2) greenX=835;
 
 
     }
@@ -181,23 +220,69 @@ class ViewEx extends View
         super.onDraw(canvas);
         canvasWidth=canvas.getWidth();
         canvasHeight=canvas.getHeight();
-        greenX = 200;
+
 //        int width = dm.widthPixels;
 //        int height = dm.heightPixels;
         greenY=greenY +greenSpeed;
         if(greenY >canvasHeight+30)
         {
-
             greenY=0;
-//            greenY=(int)Math.floor(Math.random() *(maxFishY -minFishY))+minFishY;
+//
+//            int random=(int)Math.floor(Math.random() *(canvasWidth));
+//            int random3_1=(int)((Math.random() *(canvasWidth))+1)/3;
+//            int random3_2=(int)(Math.floor(Math.random() *(canvasWidth)))*2/3;
+
+            Random ran=new Random();
+            int rnum=ran.nextInt(3);
+
+            if(rnum==0) greenX=(int)canvasWidth/6-icon.getWidth()/2;
+            else if(rnum==1) greenX=(int)canvasWidth/2-icon.getWidth()/2;
+            else if(rnum==2) greenX=(int)canvasWidth*5/6-icon.getWidth()/2;
+            Log.e("check",(String.valueOf((int)canvasWidth/6-icon.getWidth()/2))+"."+(String.valueOf((int)canvasWidth/2-icon.getWidth()/2))+"."+(String.valueOf((int)canvasWidth*5/6-icon.getWidth()/2)));
 
         }
         canvas.drawBitmap(icon,greenX,greenY,greenPaint);
+        canvas.drawLine(50,canvasHeight-300,canvasWidth-50,canvasHeight-300,greenPaint);
+        canvas.drawLine(50,canvasHeight-600,canvasWidth-50,canvasHeight-600,greenPaint);
 
+        canvas.drawLine((int)canvasWidth/3,0,(int)canvasWidth/3,canvasHeight,rnqns);
+        canvas.drawLine((int)canvasWidth*2/3,0,(int)canvasWidth*2/3,canvasHeight,rnqns);
+
+
+
+        if (touch)
+        {
+            condition.setColor(Color.RED);
+            canvas.drawCircle(50,canvasHeight-650,55,condition);
+            if(hitrhythmChecker(greenX,greenY)){
+                condition.setColor(Color.GREEN);
+                canvas.drawCircle(50,canvasHeight-650,57,condition);
+            }
+            touch=false;
+        }
+        else {
+            condition.setColor(Color.RED);
+            canvas.drawCircle(50,canvasHeight-650,50,condition);
+            touch =false;
+        }
 
     }
 
 
+    public boolean hitrhythmChecker(int x,int y)
+    {
+        if(canvasHeight-600<y && y<canvasHeight-300){
+            return true;
+        }
+        return false;
+    }
+    public boolean onTouchEvent(MotionEvent event) {
+        if(event.getAction()==MotionEvent.ACTION_DOWN){
+            touch =true;
+
+        }
+        return true;
+    }
 
 
 }
