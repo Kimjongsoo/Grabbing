@@ -1,62 +1,77 @@
 package com.example.soo.grabbing;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static android.graphics.BitmapFactory.decodeResource;
+
 public class RhythmGame extends AppCompatActivity {
     private MediaPlayer mMediaPlayer;
+    private int greenX,greenY, greenSpeed=20;
+    private Paint greenPaint =new Paint();
+    private int fishX=10;
+    private int fishY;
+    private Handler handler=new Handler();
+    private final  static long Interval = 30;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rhythm_game);
+        final ViewEx viewEx = new ViewEx(this);
+        setContentView(viewEx);
+        Timer timer=new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        viewEx.invalidate();
+                    }
+                });
+            }
+        },0,Interval);
+//        setContentView(R.layout.activity_rhythm_game);
 
 
         checkDangerousPermissions();
 
-        Button musicPlayBtn = findViewById(R.id.music_start);
-        musicPlayBtn.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                playAudioFromRawResource();
-//                playAudioFromExternalStorage();
-            }
-        });
-
-//        Button videoPlayBtn = findViewById(R.id.videoPlayBtn);
-//        videoPlayBtn.setOnClickListener(new View.OnClickListener() {
+//        Button musicPlayBtn = findViewById(R.id.music_start);
+//        musicPlayBtn.setOnClickListener(new View.OnClickListener() {
+//
 //            @Override
 //            public void onClick(View view) {
-//                playVideo();
+//                playAudioFromRawResource();
+////                playAudioFromExternalStorage();
 //            }
-//        });
-//
-//        Button imageCaptureBtn = findViewById(R.id.imageCaptureBtn);
-//        imageCaptureBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dispatchTakePictureIntent();
-//            }
-//        });
-//        Button vidioRec=findViewById(R.id.videoRecBtn);
-//        vidioRec.setOnClickListener(new View.OnClickListener(){
-//            public void onClick(View view){
-//                dispatchTakeVideoIntent();
-//            }
-//
 //        });
 
 
+        mMediaPlayer= MediaPlayer.create(this,R.raw.blue_moon);
+        mMediaPlayer.setVolume(0.8f,0.8f);
+        mMediaPlayer.setLooping(true);
+        mMediaPlayer.start();
 
     }
 
@@ -110,14 +125,6 @@ public class RhythmGame extends AppCompatActivity {
     //raw 에 있는 gitan 을 실행하는 uri
 
 
-//    private void playAudioFromExternalStorage(){
-//        Uri uri = Uri.parse("file://" + Environment.getExternalStorageDirectory().getPath() + "/Music/" +  "blue_moon.mp3");
-//        try {
-//            playAudio(uri);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 
 
@@ -151,3 +158,48 @@ public class RhythmGame extends AppCompatActivity {
         mMediaPlayer.start();
     }
 }
+class ViewEx extends View
+{
+    private int canvasWidth, canvasHeight;
+    private int greenX,greenY, greenSpeed=15;
+    private Paint greenPaint =new Paint();
+    private int fishX=10;
+    private int fishY;
+    Bitmap icon=BitmapFactory.decodeResource(getResources(),R.drawable.sw);
+    private Bitmap life[] = new Bitmap[2];
+    public ViewEx(Context context)
+    {
+        super(context);
+        greenPaint.setColor(Color.GREEN);
+        greenPaint.setAntiAlias(false);
+
+
+    }
+    protected void onDraw(Canvas canvas) {
+//        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
+
+        super.onDraw(canvas);
+        canvasWidth=canvas.getWidth();
+        canvasHeight=canvas.getHeight();
+        greenX = 200;
+//        int width = dm.widthPixels;
+//        int height = dm.heightPixels;
+        greenY=greenY +greenSpeed;
+        if(greenY >canvasHeight+30)
+        {
+
+            greenY=0;
+//            greenY=(int)Math.floor(Math.random() *(maxFishY -minFishY))+minFishY;
+
+        }
+        canvas.drawBitmap(icon,greenX,greenY,greenPaint);
+
+
+    }
+
+
+
+
+}
+
+
