@@ -184,6 +184,7 @@ class ViewEx extends View
     private int score, lifeCounter,scorecheck;
     private boolean touch=false;
 //    private RhythmGame rhythmGame;
+    private boolean once=true;
 
 
     public ViewEx(Context context)
@@ -255,6 +256,8 @@ class ViewEx extends View
             else if(rnum==2) greenX=(int)canvasWidth*5/6-icon.getWidth()/2;
             Log.e("check",(String.valueOf((int)canvasWidth/6-icon.getWidth()/2))+"."+(String.valueOf((int)canvasWidth/2-icon.getWidth()/2))+"."+(String.valueOf((int)canvasWidth*5/6-icon.getWidth()/2)));
 
+//            condition.setAlpha(255);
+            once=true;
         }
         canvas.drawBitmap(icon,greenX,greenY,greenPaint);
         canvas.drawLine(50,canvasHeight-300,canvasWidth-50,canvasHeight-300,greenPaint);
@@ -267,12 +270,19 @@ class ViewEx extends View
 
         if (touch)
         {
-            condition.setColor(Color.RED);
-            canvas.drawCircle(50,canvasHeight-650,55,condition);
-            if(hitrhythmChecker(greenX,greenY)){
-                condition.setColor(Color.GREEN);
-                canvas.drawCircle(50,canvasHeight-650,57,condition);
-                score=score +10;
+//            Log.e("check1",String.valueOf(condition.getAlpha()));
+            if(once==true) {
+                condition.setColor(Color.RED);
+                canvas.drawCircle(50, canvasHeight - 650, 55, condition);
+                if (hitrhythmChecker(greenX, greenY)) {
+                    condition.setColor(Color.GREEN);
+                    canvas.drawCircle(50, canvasHeight - 650, 57, condition);
+                    score = score + 10;
+//                    condition.setAlpha(50);
+//                    Log.e("check2",String.valueOf(condition.getAlpha()));
+                    once=false;
+                }
+
             }
             touch=false;
         }
