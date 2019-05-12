@@ -54,7 +54,8 @@
             android:layout_height="150dp"
             android:padding="0sp"
             android:scaleType="centerCrop"
-            android:src="@drawable/rhythm" />
+
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -115,7 +116,7 @@
             android:layout_height="150dp"
             android:padding="0sp"
             android:scaleType="centerCrop"
-            android:src="@drawable/avoidg" />
+             />
 
         <LinearLayout
             android:layout_width="match_parent"

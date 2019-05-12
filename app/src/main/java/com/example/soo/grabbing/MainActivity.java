@@ -16,6 +16,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 import app.akexorcist.bluetotohspp.library.DeviceList;
@@ -100,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ImageButton Game1=(ImageButton)findViewById(R.id.game1);
+        GlideDrawableImageViewTarget gifImage=new GlideDrawableImageViewTarget(Game1);
+        Glide.with(this).load(R.drawable.rhythm).into(gifImage);
         Game1.setOnClickListener(new OnClickListener(){
 
             @Override
@@ -118,6 +123,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        ImageButton Game2=(ImageButton)findViewById(R.id.game2);
+        GlideDrawableImageViewTarget gifImage2=new GlideDrawableImageViewTarget(Game2);
+        Glide.with(this).load(R.drawable.avoidg).into(gifImage2);
+
     }
 
     public void onDestroy() {

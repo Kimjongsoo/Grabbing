@@ -180,11 +180,18 @@ class ViewEx extends View
     private int fishX=10;
     private int fishY;
     Bitmap icon=BitmapFactory.decodeResource(getResources(),R.drawable.sw);
+    Bitmap twodu=BitmapFactory.decodeResource(getResources(),R.drawable.twodu);
+    Bitmap thrdu=BitmapFactory.decodeResource(getResources(),R.drawable.thrdu);
+    Bitmap rktma=BitmapFactory.decodeResource(getResources(),R.drawable.rktma);
+    Bitmap memory;
+
     private Bitmap life[] = new Bitmap[2];
     private int score, lifeCounter,scorecheck;
     private boolean touch=false;
 //    private RhythmGame rhythmGame;
     private boolean once=true;
+    int checkcheck =5;
+    int touchx,touchy;
 
 
     public ViewEx(Context context)
@@ -218,9 +225,21 @@ class ViewEx extends View
         int rnum=ran.nextInt(3);
         
 
-        if(rnum==0) greenX=115;
-        else if(rnum==1) greenX=475;
-        else if(rnum==2) greenX=835;
+        if(rnum==0) {
+            greenX = 115;
+            memory=twodu;
+            checkcheck=0;
+        }
+        else if(rnum==1) {
+            greenX = 475;
+            memory=thrdu;
+            checkcheck=1;
+        }
+        else if(rnum==2) {
+            greenX = 835;
+            memory=rktma;
+            checkcheck=2;
+        }
 
 
     }
@@ -251,15 +270,27 @@ class ViewEx extends View
             Random ran=new Random();
             int rnum=ran.nextInt(3);
 
-            if(rnum==0) greenX=(int)canvasWidth/6-icon.getWidth()/2;
-            else if(rnum==1) greenX=(int)canvasWidth/2-icon.getWidth()/2;
-            else if(rnum==2) greenX=(int)canvasWidth*5/6-icon.getWidth()/2;
+            if(rnum==0) {
+                greenX = (int) canvasWidth / 6 - icon.getWidth() / 2;
+                memory=twodu;
+                checkcheck=0;
+            }
+            else if(rnum==1) {
+                greenX = (int) canvasWidth / 2 - icon.getWidth() / 2;
+                memory=thrdu;
+                checkcheck=1;
+            }
+            else if(rnum==2) {
+                greenX = (int) canvasWidth * 5 / 6 - icon.getWidth() / 2;
+                memory=rktma;
+                checkcheck=2;
+            }
             Log.e("check",(String.valueOf((int)canvasWidth/6-icon.getWidth()/2))+"."+(String.valueOf((int)canvasWidth/2-icon.getWidth()/2))+"."+(String.valueOf((int)canvasWidth*5/6-icon.getWidth()/2)));
 
 //            condition.setAlpha(255);
             once=true;
         }
-        canvas.drawBitmap(icon,greenX,greenY,greenPaint);
+        canvas.drawBitmap(memory,greenX,greenY,greenPaint);
         canvas.drawLine(50,canvasHeight-300,canvasWidth-50,canvasHeight-300,greenPaint);
         canvas.drawLine(50,canvasHeight-600,canvasWidth-50,canvasHeight-600,greenPaint);
 
@@ -274,9 +305,42 @@ class ViewEx extends View
             if(once==true) {
                 condition.setColor(Color.RED);
                 canvas.drawCircle(50, canvasHeight - 650, 55, condition);
-                if (hitrhythmChecker(greenX, greenY)) {
-                    condition.setColor(Color.GREEN);
+//
+//                if (hitrhythmChecker(greenX, greenY)) {
+//                    condition.setColor(Color.BLACK);
+//                    canvas.drawCircle(50, canvasHeight - 650, 57, condition);
+//                    canvas.drawText("Good",50,canvasHeight - 650,condition);
+//                    condition.setTextSize(200);
+//                    score = score + 10;
+////                    condition.setAlpha(50);
+////                    Log.e("check2",String.valueOf(condition.getAlpha()));
+//                    once=false;
+//                }
+                if (checkcheck==0&&hitrhythmChecker(greenX,greenY)&&hitrhythmChecker_2du(touchx,touchy)){
+                    condition.setColor(Color.BLACK);
                     canvas.drawCircle(50, canvasHeight - 650, 57, condition);
+                    canvas.drawText("Good",50,canvasHeight - 650,condition);
+                    condition.setTextSize(200);
+                    score = score + 10;
+//                    condition.setAlpha(50);
+//                    Log.e("check2",String.valueOf(condition.getAlpha()));
+                    once=false;
+                }
+                if (checkcheck==1&&hitrhythmChecker(greenX,greenY)&&hitrhythmChecker_3du(touchx,touchy)){
+                    condition.setColor(Color.BLACK);
+                    canvas.drawCircle(50, canvasHeight - 650, 57, condition);
+                    canvas.drawText("Good",50,canvasHeight - 650,condition);
+                    condition.setTextSize(200);
+                    score = score + 10;
+//                    condition.setAlpha(50);
+//                    Log.e("check2",String.valueOf(condition.getAlpha()));
+                    once=false;
+                }
+                if (checkcheck==2&&hitrhythmChecker(greenX,greenY)&&hitrhythmChecker_rktma(touchx,touchy)){
+                    condition.setColor(Color.BLACK);
+                    canvas.drawCircle(50, canvasHeight - 650, 57, condition);
+                    canvas.drawText("Good",50,canvasHeight - 650,condition);
+                    condition.setTextSize(200);
                     score = score + 10;
 //                    condition.setAlpha(50);
 //                    Log.e("check2",String.valueOf(condition.getAlpha()));
@@ -317,8 +381,31 @@ class ViewEx extends View
         }
         return false;
     }
+    public boolean hitrhythmChecker_2du(int x,int y)
+    {
+        if(canvasHeight-600<y && y<canvasHeight-300 && x<(int)canvasWidth/3){
+            return true;
+        }
+        return false;
+    }
+    public boolean hitrhythmChecker_3du(int x,int y)
+    {
+        if(canvasHeight-600<y && y<canvasHeight-300 && (int)canvasWidth/3<=x&& x<(int)canvasWidth*2/3){
+            return true;
+        }
+        return false;
+    }
+    public boolean hitrhythmChecker_rktma(int x,int y)
+    {
+        if(canvasHeight-600<y && y<canvasHeight-300 && x>(int)canvasWidth*2/3){
+            return true;
+        }
+        return false;
+    }
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction()==MotionEvent.ACTION_DOWN){
+            touchx=(int)event.getX();
+            touchy=(int)event.getY();
             touch =true;
 
         }
