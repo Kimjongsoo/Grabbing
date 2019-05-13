@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".RhythmGame"></activity>
+        <activity android:name=".GameOverActivity"></activity>
     </application>
 
 </manifest>

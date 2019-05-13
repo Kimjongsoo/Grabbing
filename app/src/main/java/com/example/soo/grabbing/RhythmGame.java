@@ -3,6 +3,7 @@ package com.example.soo.grabbing;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,6 +44,7 @@ public class RhythmGame extends AppCompatActivity {
 //    DisplayMetrics dm;
 //    public int dwidth;
 //    public int dheight;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -289,6 +291,17 @@ class ViewEx extends View
 
 //            condition.setAlpha(255);
             once=true;
+
+            if (lifeCounter==0)
+            {
+                Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
+
+                Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
+                gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                gameOverIntent.putExtra("score",score);
+                getContext().startActivity(gameOverIntent);
+
+            }
         }
         canvas.drawBitmap(memory,greenX,greenY,greenPaint);
         canvas.drawLine(50,canvasHeight-300,canvasWidth-50,canvasHeight-300,greenPaint);
