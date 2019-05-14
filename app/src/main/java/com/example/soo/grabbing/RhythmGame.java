@@ -2,6 +2,7 @@ package com.example.soo.grabbing;
 
 import android.Manifest;
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,13 +26,24 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewDebug;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import app.akexorcist.bluetotohspp.library.BluetoothSPP;
+import app.akexorcist.bluetotohspp.library.BluetoothState;
+import app.akexorcist.bluetotohspp.library.DeviceList;
+
 import static android.graphics.BitmapFactory.decodeResource;
+import static com.example.soo.grabbing.MainActivity.a;
 
 public class RhythmGame extends AppCompatActivity {
     private MediaPlayer mMediaPlayer;
@@ -44,10 +56,19 @@ public class RhythmGame extends AppCompatActivity {
 //    DisplayMetrics dm;
 //    public int dwidth;
 //    public int dheight;
+private BluetoothSPP bt;
+    int i=0;
+
+//    String[] a=new String[10];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MainActivity main = (MainActivity)getApplicationContext();
+
+/////
+
         final ViewEx viewEx = new ViewEx(this);
         setContentView(viewEx);
 //        dm = getApplicationContext().getResources().getDisplayMetrics();
@@ -70,15 +91,7 @@ public class RhythmGame extends AppCompatActivity {
 
         checkDangerousPermissions();
 
-//        Button musicPlayBtn = findViewById(R.id.music_start);
-//        musicPlayBtn.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View view) {
-//                playAudioFromRawResource();
-////                playAudioFromExternalStorage();
-//            }
-//        });
+
 
 
         mMediaPlayer= MediaPlayer.create(this,R.raw.blue_moon);
@@ -87,6 +100,7 @@ public class RhythmGame extends AppCompatActivity {
         mMediaPlayer.start();
 
     }
+
 
     final int REQUEST_EXTERNAL_STORAGE_FOR_MULTIMEDIA = 1;
 
@@ -246,17 +260,17 @@ class ViewEx extends View
             checkcheck=2;
         }
         //메인엑티비티에서 변수참고하기
-        MainActivity main = new MainActivity();
-       
-       Log.e("senser","Ax="+main.a[0]+" Ay="+main.a[1]+" Az="+main.a[2]+"\n"+"온도="+main.a[3]+"\n"+"Gx="+main.a[4]+" Gy="+main.a[5]+" Gz="+main.a[6] +"\n"+"Pitch="+main.a[7]+" Roll="+main.a[8]+" Yaw="+main.a[9]);
- //어깨  roll값 하락  -70보다 아래  acZ값 상승 예상 0>
+//        MainActivity main = (MainActivity)getApplicationContext;
+
+//       Log.e("senser","Ax="+main.a[0]+" Ay="+main.a[1]+" Az="+main.a[2]+"\n"+"온도="+main.a[3]+"\n"+"Gx="+main.a[4]+" Gy="+main.a[5]+" Gz="+main.a[6] +"\n"+"Pitch="+main.a[7]+" Roll="+main.a[8]+" Yaw="+main.a[9]);
+    //어깨  roll값 하락  -70보다 아래  acZ값 상승 예상 0>
 //       if( Integer.valueOf(main.a[8])<-70 && Integer.valueOf(main.a[2])>3800){}
-        //이두 roll값 상승 70보다 위 acZ 하락 예상 0보다 아래
+    //이두 roll값 상승 70보다 위 acZ 하락 예상 0보다 아래
 //        if( Integer.valueOf(main.a[8])>70 && Integer.valueOf(main.a[2])<-1000){}
 //삼두 yaw값 하락 y 값 하락인가 그럴거임 헷갈리니까 그냥 Gz값 증가
 //        if( Integer.valueOf(main.a[9])>2000 && Integer.valueOf(main.a[1])<-3000){}
-        //checkcheck대신에 쓰면 될거같음
-    }
+    //checkcheck대신에 쓰면 될거같음
+}
     protected void onDraw(Canvas canvas) {
 //        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
 
@@ -325,14 +339,24 @@ class ViewEx extends View
 
 
 
-        if (touch)
-        {
-//            Log.e("check1",String.valueOf(condition.getAlpha()));
-            if(once==true) {
-                condition.setColor(Color.RED);
-                canvas.drawCircle(50, canvasHeight - 650, 55, condition);
-//
-//                if (hitrhythmChecker(greenX, greenY)) {
+//        if (touch)
+//        {
+////            Log.e("check1",String.valueOf(condition.getAlpha()));
+//            if(once==true) {
+//                condition.setColor(Color.RED);
+//                canvas.drawCircle(50, canvasHeight - 650, 55, condition);
+////
+////                if (hitrhythmChecker(greenX, greenY)) {
+////                    condition.setColor(Color.BLACK);
+////                    canvas.drawCircle(50, canvasHeight - 650, 57, condition);
+////                    canvas.drawText("Good",50,canvasHeight - 650,condition);
+////                    condition.setTextSize(200);
+////                    score = score + 10;
+//////                    condition.setAlpha(50);
+//////                    Log.e("check2",String.valueOf(condition.getAlpha()));
+////                    once=false;
+////                }
+//                if (Checkexersize()==0&&hitrhythmChecker(greenX,greenY)&&hitrhythmChecker_2du(touchx,touchy)){
 //                    condition.setColor(Color.BLACK);
 //                    canvas.drawCircle(50, canvasHeight - 650, 57, condition);
 //                    canvas.drawText("Good",50,canvasHeight - 650,condition);
@@ -342,7 +366,42 @@ class ViewEx extends View
 ////                    Log.e("check2",String.valueOf(condition.getAlpha()));
 //                    once=false;
 //                }
-                if (Checkexersize()==0&&hitrhythmChecker(greenX,greenY)&&hitrhythmChecker_2du(touchx,touchy)){
+//                if (Checkexersize()==1&&hitrhythmChecker(greenX,greenY)&&hitrhythmChecker_3du(touchx,touchy)){
+//                    condition.setColor(Color.BLACK);
+//                    canvas.drawCircle(50, canvasHeight - 650, 57, condition);
+//                    canvas.drawText("Good",50,canvasHeight - 650,condition);
+//                    condition.setTextSize(200);
+//                    score = score + 10;
+////                    condition.setAlpha(50);
+////                    Log.e("check2",String.valueOf(condition.getAlpha()));
+//                    once=false;
+//                }
+//                if (Checkexersize()==2&&hitrhythmChecker(greenX,greenY)&&hitrhythmChecker_rktma(touchx,touchy)){
+//                    condition.setColor(Color.BLACK);
+//                    canvas.drawCircle(50, canvasHeight - 650, 57, condition);
+//                    canvas.drawText("Good",50,canvasHeight - 650,condition);
+//                    condition.setTextSize(200);
+//                    score = score + 10;
+////                    condition.setAlpha(50);
+////                    Log.e("check2",String.valueOf(condition.getAlpha()));
+//                    once=false;
+//                }
+//
+//            }
+//            touch=false;
+//        }
+//        else {
+//            condition.setColor(Color.RED);
+//            canvas.drawCircle(50,canvasHeight-650,50,condition);
+//            touch =false;
+//        }
+
+//            Log.e("check1",String.valueOf(condition.getAlpha()));
+            if(once==true) {
+                condition.setColor(Color.RED);
+                canvas.drawCircle(50, canvasHeight - 650, 55, condition);
+
+                if (Checkexersize()==0&&hitrhythmChecker_2du(greenX,greenY)){
                     condition.setColor(Color.BLACK);
                     canvas.drawCircle(50, canvasHeight - 650, 57, condition);
                     canvas.drawText("Good",50,canvasHeight - 650,condition);
@@ -352,7 +411,7 @@ class ViewEx extends View
 //                    Log.e("check2",String.valueOf(condition.getAlpha()));
                     once=false;
                 }
-                if (Checkexersize()==1&&hitrhythmChecker(greenX,greenY)&&hitrhythmChecker_3du(touchx,touchy)){
+                if (Checkexersize()==1&&hitrhythmChecker_3du(greenX,greenY)){
                     condition.setColor(Color.BLACK);
                     canvas.drawCircle(50, canvasHeight - 650, 57, condition);
                     canvas.drawText("Good",50,canvasHeight - 650,condition);
@@ -362,7 +421,7 @@ class ViewEx extends View
 //                    Log.e("check2",String.valueOf(condition.getAlpha()));
                     once=false;
                 }
-                if (Checkexersize()==2&&hitrhythmChecker(greenX,greenY)&&hitrhythmChecker_rktma(touchx,touchy)){
+                if (Checkexersize()==2&&hitrhythmChecker_rktma(greenX,greenY)){
                     condition.setColor(Color.BLACK);
                     canvas.drawCircle(50, canvasHeight - 650, 57, condition);
                     canvas.drawText("Good",50,canvasHeight - 650,condition);
@@ -374,13 +433,8 @@ class ViewEx extends View
                 }
 
             }
-            touch=false;
-        }
-        else {
-            condition.setColor(Color.RED);
-            canvas.drawCircle(50,canvasHeight-650,50,condition);
-            touch =false;
-        }
+
+
 
         for(int i=0; i<3; i++)
         {
@@ -440,17 +494,18 @@ class ViewEx extends View
 
     public int Checkexersize(){
         MainActivity main=new MainActivity();
-
-        //어깨  roll값 하락  -70보다 아래  acZ값 상승 예상 0>
-       if( Integer.valueOf(main.a[8])<-70 && Integer.valueOf(main.a[2])>3800){
+Log.e("Checkexersize","okok");
+Log.e("Checkexersize1","Ax="+a[0]+" Ay="+a[1]+" Az="+a[2]+"\n"+"온도="+a[3]+"\n"+"Gx="+a[4]+" Gy="+a[5]+" Gz="+a[6] +"\n"+"Pitch="+a[7]+" Roll="+a[8]+" Yaw="+a[9]);
+        //이두
+       if( Float.valueOf(a[8])>50 && Float.valueOf(a[1])>1500){
            return 0;
        }
-        //이두 roll값 상승 70보다 위 acZ 하락 예상 0보다 아래
-        if( Integer.valueOf(main.a[8])>70 && Integer.valueOf(main.a[2])<-1000){
+        //어깨
+        if( -140<Float.valueOf(a[8])&&Float.valueOf(a[8])<-180&& Float.valueOf(a[1])>-3000|| 130<Float.valueOf(a[8])&&Float.valueOf(a[8])<180&& Float.valueOf(a[1])>-3000){
            return 1;
         }
         //삼두 yaw값 하락 y 값 하락인가 그럴거임 헷갈리니까 그냥 Gz값 증가
-        if( Integer.valueOf(main.a[9])>2000 && Integer.valueOf(main.a[1])<-3000){
+        if( Float.valueOf(a[7])<-40 && Float.valueOf(a[0])<-2000){
            return 2;
         }
         else return 3;

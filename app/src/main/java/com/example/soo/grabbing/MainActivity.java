@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothSPP bt;
     int i=0;
 
-    String[] a=new String[10];
+    static public String[] a=new String[10];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),RhythmGame.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             }
         });
