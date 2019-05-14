@@ -182,6 +182,7 @@ class ViewEx extends View
     private int fishX=10;
     private int fishY;
     Bitmap icon=BitmapFactory.decodeResource(getResources(),R.drawable.sw);
+    Bitmap background=BitmapFactory.decodeResource(getResources(),R.drawable.background);
     Bitmap twodu=BitmapFactory.decodeResource(getResources(),R.drawable.twodu);
     Bitmap thrdu=BitmapFactory.decodeResource(getResources(),R.drawable.thrdu);
     Bitmap rktma=BitmapFactory.decodeResource(getResources(),R.drawable.rktma);
@@ -213,8 +214,10 @@ class ViewEx extends View
         scorePaint.setTypeface(Typeface.DEFAULT_BOLD);
         scorePaint.setAntiAlias(true);
 
-        life[0] = BitmapFactory.decodeResource(getResources(),R.drawable.hearts);
-        life[1] = BitmapFactory.decodeResource(getResources(),R.drawable.heart_grey);
+
+
+        life[0] = BitmapFactory.decodeResource(getResources(),R.drawable.heartsa);
+        life[1] = BitmapFactory.decodeResource(getResources(),R.drawable.heart_greya);
         score=0;
         scorecheck=0;
 
@@ -242,16 +245,26 @@ class ViewEx extends View
             memory=rktma;
             checkcheck=2;
         }
-
-
+        //메인엑티비티에서 변수참고하기
+        MainActivity main = new MainActivity();
+       
+       Log.e("senser","Ax="+main.a[0]+" Ay="+main.a[1]+" Az="+main.a[2]+"\n"+"온도="+main.a[3]+"\n"+"Gx="+main.a[4]+" Gy="+main.a[5]+" Gz="+main.a[6] +"\n"+"Pitch="+main.a[7]+" Roll="+main.a[8]+" Yaw="+main.a[9]);
+ //어깨  roll값 하락  -70보다 아래  acZ값 상승 예상 0>
+//       if( Integer.valueOf(main.a[8])<-70 && Integer.valueOf(main.a[2])>3800){}
+        //이두 roll값 상승 70보다 위 acZ 하락 예상 0보다 아래
+//        if( Integer.valueOf(main.a[8])>70 && Integer.valueOf(main.a[2])<-1000){}
+//삼두 yaw값 하락 y 값 하락인가 그럴거임 헷갈리니까 그냥 Gz값 증가
+//        if( Integer.valueOf(main.a[9])>2000 && Integer.valueOf(main.a[1])<-3000){}
+        //checkcheck대신에 쓰면 될거같음
     }
     protected void onDraw(Canvas canvas) {
 //        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
 
         super.onDraw(canvas);
+        canvas.drawBitmap(background,0,0,null);
         canvasWidth=canvas.getWidth();
         canvasHeight=canvas.getHeight();
-
+        Log.e("hihi",String.valueOf(canvasWidth)+"aaa"+String.valueOf(canvasHeight));
 //        int width = dm.widthPixels;
 //        int height = dm.heightPixels;
         greenY=greenY +greenSpeed;
@@ -329,7 +342,7 @@ class ViewEx extends View
 ////                    Log.e("check2",String.valueOf(condition.getAlpha()));
 //                    once=false;
 //                }
-                if (checkcheck==0&&hitrhythmChecker(greenX,greenY)&&hitrhythmChecker_2du(touchx,touchy)){
+                if (Checkexersize()==0&&hitrhythmChecker(greenX,greenY)&&hitrhythmChecker_2du(touchx,touchy)){
                     condition.setColor(Color.BLACK);
                     canvas.drawCircle(50, canvasHeight - 650, 57, condition);
                     canvas.drawText("Good",50,canvasHeight - 650,condition);
@@ -339,7 +352,7 @@ class ViewEx extends View
 //                    Log.e("check2",String.valueOf(condition.getAlpha()));
                     once=false;
                 }
-                if (checkcheck==1&&hitrhythmChecker(greenX,greenY)&&hitrhythmChecker_3du(touchx,touchy)){
+                if (Checkexersize()==1&&hitrhythmChecker(greenX,greenY)&&hitrhythmChecker_3du(touchx,touchy)){
                     condition.setColor(Color.BLACK);
                     canvas.drawCircle(50, canvasHeight - 650, 57, condition);
                     canvas.drawText("Good",50,canvasHeight - 650,condition);
@@ -349,7 +362,7 @@ class ViewEx extends View
 //                    Log.e("check2",String.valueOf(condition.getAlpha()));
                     once=false;
                 }
-                if (checkcheck==2&&hitrhythmChecker(greenX,greenY)&&hitrhythmChecker_rktma(touchx,touchy)){
+                if (Checkexersize()==2&&hitrhythmChecker(greenX,greenY)&&hitrhythmChecker_rktma(touchx,touchy)){
                     condition.setColor(Color.BLACK);
                     canvas.drawCircle(50, canvasHeight - 650, 57, condition);
                     canvas.drawText("Good",50,canvasHeight - 650,condition);
@@ -371,8 +384,8 @@ class ViewEx extends View
 
         for(int i=0; i<3; i++)
         {
-            int x= (int) (580+life[0].getWidth() *1.5 *i);
-            int y= 30;
+            int x= (int) (730+life[0].getWidth() *1.5 *i);
+            int y= 90;
 
             if(i<lifeCounter)
             {
@@ -383,7 +396,7 @@ class ViewEx extends View
                 canvas.drawBitmap(life[1], x,y,null);
             }
         }
-        canvas.drawText("Score : "+score, 20, 60, scorePaint);
+        canvas.drawText("Score : "+score, 20, 150, scorePaint);
     }
 
 
@@ -425,6 +438,24 @@ class ViewEx extends View
         return true;
     }
 
+    public int Checkexersize(){
+        MainActivity main=new MainActivity();
+
+        //어깨  roll값 하락  -70보다 아래  acZ값 상승 예상 0>
+       if( Integer.valueOf(main.a[8])<-70 && Integer.valueOf(main.a[2])>3800){
+           return 0;
+       }
+        //이두 roll값 상승 70보다 위 acZ 하락 예상 0보다 아래
+        if( Integer.valueOf(main.a[8])>70 && Integer.valueOf(main.a[2])<-1000){
+           return 1;
+        }
+        //삼두 yaw값 하락 y 값 하락인가 그럴거임 헷갈리니까 그냥 Gz값 증가
+        if( Integer.valueOf(main.a[9])>2000 && Integer.valueOf(main.a[1])<-3000){
+           return 2;
+        }
+        else return 3;
+        //checkcheck대신에 쓰면 될거같음
+    }
 
 }
 
