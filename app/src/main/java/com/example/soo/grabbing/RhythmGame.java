@@ -193,6 +193,7 @@ class ViewEx extends View
     private Paint condition=new Paint();
     private Paint rnqns=new Paint();
     private Paint scorePaint=new Paint();
+    private Paint text=new Paint();
     private int fishX=10;
     private int fishY;
     Bitmap icon=BitmapFactory.decodeResource(getResources(),R.drawable.sw);
@@ -227,6 +228,10 @@ class ViewEx extends View
         scorePaint.setTextSize(70);
         scorePaint.setTypeface(Typeface.DEFAULT_BOLD);
         scorePaint.setAntiAlias(true);
+
+        text.setColor(Color.BLACK);
+        text.setTextSize(30);
+        text.setAntiAlias(true);
 
 
 
@@ -279,6 +284,7 @@ class ViewEx extends View
         canvasWidth=canvas.getWidth();
         canvasHeight=canvas.getHeight();
         Log.e("hihi",String.valueOf(canvasWidth)+"aaa"+String.valueOf(canvasHeight));
+        canvas.drawText("Ax="+a[0]+" Ay="+a[1]+" Az="+a[2]+"\n"+"온도="+a[3]+"\n"+"Gx="+a[4]+" Gy="+a[5]+" Gz="+a[6] +"\n"+"Pitch="+a[7]+" Roll="+a[8]+" Yaw="+a[9], 20, 500, text);
 //        int width = dm.widthPixels;
 //        int height = dm.heightPixels;
         greenY=greenY +greenSpeed;
