@@ -124,17 +124,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        Button rhybtn1=(Button)findViewById(R.id.rhythm_explanation);
-        rhybtn1.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),RhythmExplain.class);
-                startActivity(intent);
-            }
-        });
-
         ImageButton Game2=(ImageButton)findViewById(R.id.game2);
         GlideDrawableImageViewTarget gifImage2=new GlideDrawableImageViewTarget(Game2);
         Glide.with(this).load(R.drawable.avoidg).into(gifImage2);
