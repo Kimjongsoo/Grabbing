@@ -502,16 +502,17 @@ class ViewEx extends View
         MainActivity main=new MainActivity();
 Log.e("Checkexersize","okok");
 Log.e("Checkexersize1","Ax="+a[0]+" Ay="+a[1]+" Az="+a[2]+"\n"+"온도="+a[3]+"\n"+"Gx="+a[4]+" Gy="+a[5]+" Gz="+a[6] +"\n"+"Pitch="+a[7]+" Roll="+a[8]+" Yaw="+a[9]);
-        //이두
-       if( Float.valueOf(a[8])>50 && Float.valueOf(a[1])>1500){
+        //이두 roll값 40이상 pitch +-45 이하
+       if( Float.valueOf(a[8])<100&&Float.valueOf(a[8])>20 &&Float.valueOf(a[7])>-45&&Float.valueOf(a[7])<45&& Float.valueOf(a[1])>1500){
            return 0;
        }
-        //어깨
-        if( -140<Float.valueOf(a[8])&&Float.valueOf(a[8])<-180&& Float.valueOf(a[1])>-3000|| 130<Float.valueOf(a[8])&&Float.valueOf(a[8])<180&& Float.valueOf(a[1])>-3000){
+        //어깨 roll-180 -160 140 180 pitch +- 45
+        if( -180<Float.valueOf(a[8])&&Float.valueOf(a[8])<-160&& Float.valueOf(a[7])>-45&&Float.valueOf(a[7])<45|| 130<Float.valueOf(a[8])&&Float.valueOf(a[8])<180&& Float.valueOf(a[7])>-45&&Float.valueOf(a[7])<45){
            return 1;
         }
-        //삼두 yaw값 하락 y 값 하락인가 그럴거임 헷갈리니까 그냥 Gz값 증가
-        if( Float.valueOf(a[7])<-40 && Float.valueOf(a[0])<-2000){
+        //삼두 pitch -50 <  0    roll 50 150
+        if(true){
+//            Float.valueOf(a[7])>-50&&Float.valueOf(a[7])<0&& Float.valueOf(a[7])<-40 && 50<Float.valueOf(a[8])&&Float.valueOf(a[8])<150
            return 2;
         }
         else return 3;
