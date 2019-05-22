@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Movie;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -32,6 +33,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawableResource;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
 import java.util.Random;
@@ -188,7 +191,7 @@ private BluetoothSPP bt;
 class ViewEx extends View
 {
     private int canvasWidth, canvasHeight;
-    private int greenX,greenY, greenSpeed=15;
+    private int greenX,greenY, greenSpeed=25;
     private Paint greenPaint =new Paint();
     private Paint condition=new Paint();
     private Paint rnqns=new Paint();
@@ -200,14 +203,17 @@ class ViewEx extends View
     Bitmap background=BitmapFactory.decodeResource(getResources(),R.drawable.background);
     Bitmap twodu=BitmapFactory.decodeResource(getResources(),R.drawable.twodu);
     Bitmap thrdu=BitmapFactory.decodeResource(getResources(),R.drawable.thrdu);
-    Bitmap rktma=BitmapFactory.decodeResource(getResources(),R.drawable.rktma);
+//    Bitmap rktma=BitmapFactory.decodeResource(getResources(),R.drawable.rktma);
+Bitmap djRo=BitmapFactory.decodeResource(getResources(),R.drawable.djro);
     Bitmap memory;
+
 
     private Bitmap life[] = new Bitmap[2];
     private int score, lifeCounter,scorecheck;
     private boolean touch=false;
 //    private RhythmGame rhythmGame;
     private boolean once=true;
+    private boolean green=false;
     int checkcheck =5;
     int touchx,touchy;
 
@@ -218,8 +224,8 @@ class ViewEx extends View
         greenPaint.setColor(Color.GREEN);
         greenPaint.setAntiAlias(false);
 
-        condition.setColor(Color.RED);
-        condition.setAntiAlias(false);
+//        condition.setColor(Color.RED);
+//        condition.setAntiAlias(false);
 
         rnqns.setColor(Color.YELLOW);
         rnqns.setAntiAlias(false);
@@ -256,12 +262,12 @@ class ViewEx extends View
         }
         else if(rnum==1) {
             greenX = 475;
-            memory=thrdu;
+            memory=djRo;
             checkcheck=1;
         }
         else if(rnum==2) {
             greenX = 835;
-            memory=rktma;
+            memory=thrdu;
             checkcheck=2;
         }
         //메인엑티비티에서 변수참고하기
@@ -284,7 +290,10 @@ class ViewEx extends View
         canvasWidth=canvas.getWidth();
         canvasHeight=canvas.getHeight();
         Log.e("hihi",String.valueOf(canvasWidth)+"aaa"+String.valueOf(canvasHeight));
-        canvas.drawText("Ax="+a[0]+" Ay="+a[1]+" Az="+a[2]+"\n"+"온도="+a[3]+"\n"+"Gx="+a[4]+" Gy="+a[5]+" Gz="+a[6] +"\n"+"Pitch="+a[7]+" Roll="+a[8]+" Yaw="+a[9], 20, 500, text);
+//        canvas.drawText("Ax="+a[0]+" Ay="+a[1]+" Az="+a[2]+"\n"+"온도="+a[3]+"\n"+"Gx="+a[4]+" Gy="+a[5]+" Gz="+a[6] +"\n"+"Pitch="+a[7]+" Roll="+a[8]+" Yaw="+a[9], 20, 500, text);
+        canvas.drawText("Pitch="+a[7]+" Roll="+a[8]+" Yaw="+a[9], (int)canvasWidth*2/3+6, 300, text);
+        text.setTextSize(22);
+
 //        int width = dm.widthPixels;
 //        int height = dm.heightPixels;
         greenY=greenY +greenSpeed;
@@ -312,12 +321,12 @@ class ViewEx extends View
             }
             else if(rnum==1) {
                 greenX = (int) canvasWidth / 2 - icon.getWidth() / 2;
-                memory=thrdu;
+                memory=djRo;
                 checkcheck=1;
             }
             else if(rnum==2) {
                 greenX = (int) canvasWidth * 5 / 6 - icon.getWidth() / 2;
-                memory=rktma;
+                memory=thrdu;
                 checkcheck=2;
             }
             Log.e("check",(String.valueOf((int)canvasWidth/6-icon.getWidth()/2))+"."+(String.valueOf((int)canvasWidth/2-icon.getWidth()/2))+"."+(String.valueOf((int)canvasWidth*5/6-icon.getWidth()/2)));
@@ -332,9 +341,11 @@ class ViewEx extends View
                 Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
                 gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 gameOverIntent.putExtra("score",score);
+
                 getContext().startActivity(gameOverIntent);
 
             }
+            green=false;
         }
         canvas.drawBitmap(memory,greenX,greenY,greenPaint);
         canvas.drawLine(50,canvasHeight-300,canvasWidth-50,canvasHeight-300,greenPaint);
@@ -403,43 +414,58 @@ class ViewEx extends View
 //        }
 
 //            Log.e("check1",String.valueOf(condition.getAlpha()));
+
             if(once==true) {
                 condition.setColor(Color.RED);
                 canvas.drawCircle(50, canvasHeight - 650, 55, condition);
 
                 if (Checkexersize()==0&&hitrhythmChecker_2du(greenX,greenY)){
-                    condition.setColor(Color.BLACK);
+                    condition.setColor(Color.GREEN);
                     canvas.drawCircle(50, canvasHeight - 650, 57, condition);
-                    canvas.drawText("Good",50,canvasHeight - 650,condition);
-                    condition.setTextSize(200);
+//                    canvas.drawText("Good",50,canvasHeight - 650,condition);
+//
+//                    condition.setTextSize(200);
                     score = score + 10;
+
 //                    condition.setAlpha(50);
 //                    Log.e("check2",String.valueOf(condition.getAlpha()));
                     once=false;
                 }
-                if (Checkexersize()==1&&hitrhythmChecker_3du(greenX,greenY)){
-                    condition.setColor(Color.BLACK);
+                if (Checkexersize()==1&&hitrhythmChecker_djRo(greenX,greenY)){
+                    condition.setColor(Color.GREEN);
                     canvas.drawCircle(50, canvasHeight - 650, 57, condition);
-                    canvas.drawText("Good",50,canvasHeight - 650,condition);
-                    condition.setTextSize(200);
+//                    canvas.drawText("Good",50,canvasHeight - 650,condition);
+//                    condition.setTextSize(200);
+
+                    //////
                     score = score + 10;
+
+
+
 //                    condition.setAlpha(50);
 //                    Log.e("check2",String.valueOf(condition.getAlpha()));
                     once=false;
                 }
-                if (Checkexersize()==2&&hitrhythmChecker_rktma(greenX,greenY)){
-                    condition.setColor(Color.BLACK);
+                if (Checkexersize()==2&&hitrhythmChecker_3du(greenX,greenY)){
+                    condition.setColor(Color.GREEN);
                     canvas.drawCircle(50, canvasHeight - 650, 57, condition);
-                    canvas.drawText("Good",50,canvasHeight - 650,condition);
-                    condition.setTextSize(200);
+//                    canvas.drawText("Good",50,canvasHeight - 650,condition);
+//                    condition.setTextSize(200);
+                    ////
+
+                    //////
                     score = score + 10;
+                  
 //                    condition.setAlpha(50);
 //                    Log.e("check2",String.valueOf(condition.getAlpha()));
                     once=false;
                 }
 
             }
-
+        else{
+                condition.setColor(Color.GREEN);
+                canvas.drawCircle(50, canvasHeight - 650, 57, condition);
+            }
 
 
         for(int i=0; i<3; i++)
@@ -474,14 +500,14 @@ class ViewEx extends View
         }
         return false;
     }
-    public boolean hitrhythmChecker_3du(int x,int y)
+    public boolean hitrhythmChecker_djRo(int x,int y)
     {
         if(canvasHeight-600<y && y<canvasHeight-300 && (int)canvasWidth/3<=x&& x<(int)canvasWidth*2/3){
             return true;
         }
         return false;
     }
-    public boolean hitrhythmChecker_rktma(int x,int y)
+    public boolean hitrhythmChecker_3du(int x,int y)
     {
         if(canvasHeight-600<y && y<canvasHeight-300 && x>(int)canvasWidth*2/3){
             return true;
@@ -502,16 +528,16 @@ class ViewEx extends View
         MainActivity main=new MainActivity();
 Log.e("Checkexersize","okok");
 Log.e("Checkexersize1","Ax="+a[0]+" Ay="+a[1]+" Az="+a[2]+"\n"+"온도="+a[3]+"\n"+"Gx="+a[4]+" Gy="+a[5]+" Gz="+a[6] +"\n"+"Pitch="+a[7]+" Roll="+a[8]+" Yaw="+a[9]);
-        //이두 roll값 40이상 pitch +-45 이하
-       if( Float.valueOf(a[8])<100&&Float.valueOf(a[8])>20 &&Float.valueOf(a[7])>-45&&Float.valueOf(a[7])<45&& Float.valueOf(a[1])>1500){
+        //이두 roll값 40이상 80이하 pitch +-45 이하
+       if( Float.valueOf(a[8])<80&&Float.valueOf(a[8])>40 &&Float.valueOf(a[7])>-45&&Float.valueOf(a[7])<45){
            return 0;
        }
         //어깨 roll-180 -160 140 180 pitch +- 45
         if( -180<Float.valueOf(a[8])&&Float.valueOf(a[8])<-160&& Float.valueOf(a[7])>-45&&Float.valueOf(a[7])<45|| 130<Float.valueOf(a[8])&&Float.valueOf(a[8])<180&& Float.valueOf(a[7])>-45&&Float.valueOf(a[7])<45){
            return 1;
         }
-        //삼두 pitch -50 <  0    roll 50 150
-        if(true){
+        //삼두 pitch -80 <  10    roll 50 150
+        if(Float.valueOf(a[7])>-80&&Float.valueOf(a[7])<10 && 50<Float.valueOf(a[8])&&Float.valueOf(a[8])<150){
 //            Float.valueOf(a[7])>-50&&Float.valueOf(a[7])<0&& Float.valueOf(a[7])<-40 && 50<Float.valueOf(a[8])&&Float.valueOf(a[8])<150
            return 2;
         }

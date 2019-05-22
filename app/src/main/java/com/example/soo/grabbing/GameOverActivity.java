@@ -25,6 +25,7 @@ public class GameOverActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent mainIntent =new Intent(GameOverActivity.this,MainActivity.class);
+
                 startActivity(mainIntent);
             }
         });

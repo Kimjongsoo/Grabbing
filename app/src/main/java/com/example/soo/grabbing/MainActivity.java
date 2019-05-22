@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),RhythmGame.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             }
         });
@@ -138,6 +139,26 @@ public class MainActivity extends AppCompatActivity {
         ImageButton Game2=(ImageButton)findViewById(R.id.game2);
         GlideDrawableImageViewTarget gifImage2=new GlideDrawableImageViewTarget(Game2);
         Glide.with(this).load(R.drawable.avoidg).into(gifImage2);
+        Game2.setOnClickListener(new OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),AvoidGame.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            }
+        });
+
+        Button avoid=(Button)findViewById(R.id.avoid_start);
+        avoid.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),AvoidGame.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -170,14 +191,14 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        Button btnSend2 = findViewById(R.id.btnSend2);
-        final EditText textinfo =findViewById(R.id.textinfo);
-
-        btnSend2.setOnClickListener(new OnClickListener(){
-            public void onClick(View v) {
-                bt.send(textinfo.getText().toString(),true);
-            }
-        });
+//        Button btnSend2 = findViewById(R.id.btnSend2);
+//        final EditText textinfo =findViewById(R.id.textinfo);
+//
+//        btnSend2.setOnClickListener(new OnClickListener(){
+//            public void onClick(View v) {
+//                bt.send(textinfo.getText().toString(),true);
+//            }
+//        });
 
     }
 
