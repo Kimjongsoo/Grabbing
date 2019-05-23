@@ -190,6 +190,8 @@ class ViewEx2 extends View
     private int fishX=10;
     private int fishY;
     Bitmap icon=BitmapFactory.decodeResource(getResources(),R.drawable.sw);
+    Bitmap background_space=BitmapFactory.decodeResource(getResources(),R.drawable.space);
+
 //    Bitmap background=BitmapFactory.decodeResource(getResources(),R.drawable.background);
 //    Bitmap twodu=BitmapFactory.decodeResource(getResources(),R.drawable.twodu);
 //    Bitmap thrdu=BitmapFactory.decodeResource(getResources(),R.drawable.thrdu);
@@ -255,9 +257,10 @@ class ViewEx2 extends View
 //        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
 
         super.onDraw(canvas);
-//        canvas.drawBitmap(background,0,0,null);
+        canvas.drawBitmap(background_space,0,0,null);
         canvasWidth=canvas.getWidth();
         canvasHeight=canvas.getHeight();
+
         Log.e("hihi",String.valueOf(canvasWidth)+"aaa"+String.valueOf(canvasHeight));
 //        canvas.drawText("Ax="+a[0]+" Ay="+a[1]+" Az="+a[2]+"\n"+"온도="+a[3]+"\n"+"Gx="+a[4]+" Gy="+a[5]+" Gz="+a[6] +"\n"+"Pitch="+a[7]+" Roll="+a[8]+" Yaw="+a[9], 20, 500, text);
         canvas.drawText("Pitch="+a[7]+" Roll="+a[8]+" Yaw="+a[9], (int)canvasWidth*2/3+6, 300, text);
@@ -373,18 +376,39 @@ class ViewEx2 extends View
             //pitch값 +되면 왼쪽
             pilotX=pilotX-pilotSpeed;
         }
-        if(Float.valueOf(a[7])<0){
+        else if(Float.valueOf(a[7])<0){
             //pitch값 -되면 오른쪽
             pilotX=pilotX+pilotSpeed;
         }
-        if(Float.valueOf(a[8])>0){
+        else if(Float.valueOf(a[8])>0){
             //roll값 +되면 아래
             pilotY=pilotY+pilotSpeed;
         }
-        if(Float.valueOf(a[7])>0){
+        else if(Float.valueOf(a[8])<0){
             //roll값 -되면 위
             pilotY=pilotY-pilotSpeed;
         }
+        else if(Float.valueOf(a[7])>0&&Float.valueOf(a[8])<0){
+            //pitch값 +되면 왼쪽//roll값 -되면 위 ->왼쪽위
+            pilotY=pilotY-pilotSpeed+3;
+            pilotX=pilotX-pilotSpeed+3;
+        }
+        else if(Float.valueOf(a[7])<0&&Float.valueOf(a[8])<0){
+            //pitch값 -되면 오른쪽//roll값 -되면 위 ->오른쪽위
+            pilotY=pilotY-pilotSpeed+3;
+            pilotX=pilotX+pilotSpeed-3;
+        }
+        else if(Float.valueOf(a[7])>0&&Float.valueOf(a[8])>0){
+            //pitch값 +되면 왼쪽//roll값 +되면 아래 ->왼쪽아래
+            pilotY=pilotY-pilotSpeed+3;
+            pilotX=pilotX-pilotSpeed+3;
+        }
+        else if(Float.valueOf(a[7])<0&&Float.valueOf(a[8])>0){
+            //pitch값 -되면 오른쪽//roll값 +되면 아래 ->오른쪽아래
+            pilotY=pilotY-pilotSpeed+3;
+            pilotX=pilotX-pilotSpeed+3;
+        }
+
 
 }
 
