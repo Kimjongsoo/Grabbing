@@ -191,7 +191,7 @@ private BluetoothSPP bt;
 class ViewEx extends View
 {
     private int canvasWidth, canvasHeight;
-    private int greenX,greenY, greenSpeed=25;
+    private int greenX,greenY, greenSpeed=18;
     private Paint greenPaint =new Paint();
     private Paint condition=new Paint();
     private Paint rnqns=new Paint();
@@ -528,17 +528,17 @@ Bitmap djRo=BitmapFactory.decodeResource(getResources(),R.drawable.djro);
         MainActivity main=new MainActivity();
 Log.e("Checkexersize","okok");
 Log.e("Checkexersize1","Ax="+a[0]+" Ay="+a[1]+" Az="+a[2]+"\n"+"온도="+a[3]+"\n"+"Gx="+a[4]+" Gy="+a[5]+" Gz="+a[6] +"\n"+"Pitch="+a[7]+" Roll="+a[8]+" Yaw="+a[9]);
-        //이두 roll값 40이상 80이하 pitch +-45 이하
-       if( Float.valueOf(a[8])<80&&Float.valueOf(a[8])>40 &&Float.valueOf(a[7])>-45&&Float.valueOf(a[7])<45){
+        //이두 roll값 10ㅇㅅ 80이하 pitch +-45 이하
+       if( Float.valueOf(a[8])<85&&Float.valueOf(a[8])>10 &&Float.valueOf(a[7])>-45&&Float.valueOf(a[7])<45){
            return 0;
        }
-        //어깨 roll-180 -160 140 180 pitch +- 45
-        if( -180<Float.valueOf(a[8])&&Float.valueOf(a[8])<-160&& Float.valueOf(a[7])>-45&&Float.valueOf(a[7])<45|| 130<Float.valueOf(a[8])&&Float.valueOf(a[8])<180&& Float.valueOf(a[7])>-45&&Float.valueOf(a[7])<45){
+        //어깨 roll-180 -140 140 180 pitch +- 45
+       else if( -180<Float.valueOf(a[8])&&Float.valueOf(a[8])<-140&& Float.valueOf(a[7])>-45&&Float.valueOf(a[7])<45|| 130<Float.valueOf(a[8])&&Float.valueOf(a[8])<180&& Float.valueOf(a[7])>-45&&Float.valueOf(a[7])<45){
            return 1;
         }
-        //삼두 pitch -80 <  10    roll 50 150
-        if(Float.valueOf(a[7])>-80&&Float.valueOf(a[7])<10 && 50<Float.valueOf(a[8])&&Float.valueOf(a[8])<150){
-//            Float.valueOf(a[7])>-50&&Float.valueOf(a[7])<0&& Float.valueOf(a[7])<-40 && 50<Float.valueOf(a[8])&&Float.valueOf(a[8])<150
+        //삼두 pitch -80 <  10    roll 50 185
+       else if(Float.valueOf(a[7])>-80&&Float.valueOf(a[7])<10 && 50<Float.valueOf(a[8])&&Float.valueOf(a[8])<185){
+//            Float.valueOf(a[7])>-50&&Float.valueOf(a[7])<0&& Float.valueOf(a[7])<-40 && 50<Float.valueOf(a[8])&&Float.valueOf(a[8])<160
            return 2;
         }
         else return 3;

@@ -160,6 +160,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button avoidexp=(Button)findViewById(R.id.avoid_explanation);
+        avoidexp.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),AvoidGameExplain.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     public void onDestroy() {

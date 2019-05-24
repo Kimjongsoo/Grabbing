@@ -72,7 +72,7 @@ public class AvoidGame extends AppCompatActivity {
 
 
 
-        mMediaPlayer= MediaPlayer.create(this,R.raw.blue_moon);
+        mMediaPlayer= MediaPlayer.create(this,R.raw.bgm);
         mMediaPlayer.setVolume(0.8f,0.8f);
         mMediaPlayer.setLooping(true);
         mMediaPlayer.start();
@@ -177,7 +177,7 @@ class ViewEx2 extends View
     private Paint enemy5=new Paint();
     private Paint enemy6=new Paint();
     private Paint enemy7=new Paint();
-    private int pilotSpeed=3;
+    private int pilotSpeed=10;
     private int pilotX=500;
     private int pilotY=1000;
 
@@ -187,13 +187,13 @@ class ViewEx2 extends View
     private int enemy2Speed=15;
     private int enemy2X,enemy2Y;
 
-    private int enemy3Speed=22;
+    private int enemy3Speed=27;
     private int enemy3X,enemy3Y;
 
     private int enemy4Speed=17;
     private int enemy4X,enemy4Y;
 
-    private int enemy5Speed=25;
+    private int enemy5Speed=30;
     private int enemy5X,enemy5Y;
 
     private int enemy6Speed=13;
@@ -221,6 +221,14 @@ class ViewEx2 extends View
     Bitmap icon=BitmapFactory.decodeResource(getResources(),R.drawable.sw);
     Bitmap background_space=BitmapFactory.decodeResource(getResources(),R.drawable.space);
 
+    Bitmap enemyicon1=BitmapFactory.decodeResource(getResources(),R.drawable.star);
+            Bitmap enemyicon2=BitmapFactory.decodeResource(getResources(),R.drawable.star2);
+    Bitmap enemyicon3=BitmapFactory.decodeResource(getResources(),R.drawable.earth);
+            Bitmap enemyicon4=BitmapFactory.decodeResource(getResources(),R.drawable.jupiter);
+    Bitmap enemyicon5=BitmapFactory.decodeResource(getResources(),R.drawable.saturn);
+            Bitmap enemyicon6=BitmapFactory.decodeResource(getResources(),R.drawable.saturn);
+    Bitmap enemyicon7=BitmapFactory.decodeResource(getResources(),R.drawable.enemyspaceship);
+
 //    Bitmap background=BitmapFactory.decodeResource(getResources(),R.drawable.background);
 //    Bitmap twodu=BitmapFactory.decodeResource(getResources(),R.drawable.twodu);
 //    Bitmap thrdu=BitmapFactory.decodeResource(getResources(),R.drawable.thrdu);
@@ -247,12 +255,12 @@ class ViewEx2 extends View
 //        rnqns.setColor(Color.YELLOW);
 //        rnqns.setAntiAlias(false);
 
-        scorePaint.setColor(Color.BLACK);
+        scorePaint.setColor(Color.WHITE);
         scorePaint.setTextSize(70);
         scorePaint.setTypeface(Typeface.DEFAULT_BOLD);
         scorePaint.setAntiAlias(true);
 
-        text.setColor(Color.WHITE);
+        text.setColor(Color.BLACK);
         text.setTextSize(30);
         text.setAntiAlias(true);
 /////////
@@ -268,9 +276,9 @@ class ViewEx2 extends View
 /////
 
 
-        life[0] = BitmapFactory.decodeResource(getResources(), R.drawable.heartsa);
-        life[1] = BitmapFactory.decodeResource(getResources(), R.drawable.heart_greya);
-        score = 0;
+        life[0] = BitmapFactory.decodeResource(getResources(), R.drawable.hearts);
+        life[1] = BitmapFactory.decodeResource(getResources(), R.drawable.heart_grey);
+        score = -10;
         scorecheck = 0;
 
         lifeCounter = 3;
@@ -298,232 +306,200 @@ class ViewEx2 extends View
         RPYsensor();
 //        canvas.drawCircle(pilotX,pilotY,30,pilot);
         canvas.drawBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.pilot),pilotX,pilotY,pilot);
+        if (pilotX<30)
+        {
+            pilotX=30;
+        }
+        if (pilotX>canvasWidth-70)
+        {
+            pilotX=canvasWidth-70;
+        }
+        if (pilotY<30)
+        {
+            pilotY=30;
+        }
+        if (pilotY>canvasHeight-70)
+        {
+            pilotY=canvasHeight-70;
+        }
 //        greenY=greenY +greenSpeed;
         enemyY=enemyY +enemySpeed;
 
 
-        canvas.drawCircle(enemyX,enemyY,25,enemy1);
+//        canvas.drawCircle(enemyX,enemyY,25,enemy1);
 
         enemy2Y=enemy2Y +enemy2Speed;
 
 
-        canvas.drawCircle(enemy2X,enemy2Y,25,enemy2);
+//        canvas.drawCircle(enemy2X,enemy2Y,25,enemy2);
+        if(hitBallChecker(enemyX,enemyY)){
+            lifeCounter--;
+            enemyX=-200;
+            if (lifeCounter==0)
+            {
+                Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
+
+                Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
+                gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                gameOverIntent.putExtra("score",score);
+
+                getContext().startActivity(gameOverIntent);
+
+            }
+        }
+        canvas.drawBitmap(enemyicon1,enemyX,enemyY,enemy1);
+
+        if(hitBallChecker(enemy2X,enemy2Y)){
+            lifeCounter--;
+            enemy2X=-200;
+            if (lifeCounter==0)
+            {
+                Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
+
+                Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
+                gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                gameOverIntent.putExtra("score",score);
+
+                getContext().startActivity(gameOverIntent);
+
+            }
+        }
+        canvas.drawBitmap(enemyicon2,enemy2X,enemy2Y,enemy2);
 
 
         if(enemyY >canvasHeight+30)
         {
-            if(scorecheck!=score-10) {
-                lifeCounter--;
+//            if(scorecheck!=score-10) {
+//                lifeCounter--;
+//
+//            }
+//            else  scorecheck += 10;
 
-            }
-            else  scorecheck += 10;
             int random=(int)Math.floor(Math.random() *(canvasWidth));
             enemyX=random;
             enemyY=0;
 
             once=true;
 
-            if (lifeCounter==0)
-            {
-                Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
-
-                Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
-                gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                gameOverIntent.putExtra("score",score);
-
-                getContext().startActivity(gameOverIntent);
-
-            }
             duration++;
 
         }
         if(enemy2Y >canvasHeight+30)
         {
-            if(scorecheck!=score-10) {
-                lifeCounter--;
-
-            }
-            else  scorecheck += 10;
+//            if(scorecheck!=score-10) {
+//                lifeCounter--;
+//
+//            }
+//            else  scorecheck += 10;
 
             enemy2Y=0;
             int random2=(int)Math.floor(Math.random() *(canvasWidth));
             enemy2X=random2;
             once=true;
 
-            if (lifeCounter==0)
-            {
-                Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
-
-                Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
-                gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                gameOverIntent.putExtra("score",score);
-
-                getContext().startActivity(gameOverIntent);
-
-            }
             green=false;
             duration++;
         }
         if(enemy2Y >canvasHeight+30)
         {
-            if(scorecheck!=score-10) {
-                lifeCounter--;
-
-            }
-            else  scorecheck += 10;
+//            if(scorecheck!=score-10) {
+//                lifeCounter--;
+//
+//            }
+//            else  scorecheck += 10;
 
             enemy2Y=0;
             int random2=(int)Math.floor(Math.random() *(canvasWidth));
             enemy2X=random2;
             once=true;
 
-            if (lifeCounter==0)
-            {
-                Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
 
-                Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
-                gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                gameOverIntent.putExtra("score",score);
-
-                getContext().startActivity(gameOverIntent);
-
-            }
             green=false;
             duration++;
         }
 
         if(enemy3Y >canvasHeight+30)
         {
-            if(scorecheck!=score-10) {
-                lifeCounter--;
-
-            }
-            else  scorecheck += 10;
+//            if(scorecheck!=score-10) {
+//                lifeCounter--;
+//
+//            }
+//            else  scorecheck += 10;
 
             enemy3Y=0;
             int random3=(int)Math.floor(Math.random() *(canvasWidth));
             enemy3X=random3;
             once=true;
 
-            if (lifeCounter==0)
-            {
-                Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
 
-                Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
-                gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                gameOverIntent.putExtra("score",score);
-
-                getContext().startActivity(gameOverIntent);
-
-            }
             green=false;
             duration++;
         }
         if(enemy4Y >canvasHeight+30)
         {
-            if(scorecheck!=score-10) {
-                lifeCounter--;
-
-            }
-            else  scorecheck += 10;
+//            if(scorecheck!=score-10) {
+//                lifeCounter--;
+//
+//            }
+//            else  scorecheck += 10;
 
             enemy4Y=0;
             int random4=(int)Math.floor(Math.random() *(canvasWidth));
             enemy4X=random4;
             once=true;
 
-            if (lifeCounter==0)
-            {
-                Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
 
-                Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
-                gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                gameOverIntent.putExtra("score",score);
-
-                getContext().startActivity(gameOverIntent);
-
-            }
             green=false;
             duration++;
         }
         if(enemy5Y >canvasHeight+30)
         {
-            if(scorecheck!=score-10) {
-                lifeCounter--;
-
-            }
-            else  scorecheck += 10;
+//            if(scorecheck!=score-10) {
+//                lifeCounter--;
+//
+//            }
+//            else  scorecheck += 10;
 
             enemy5Y=0;
             int random5=(int)Math.floor(Math.random() *(canvasWidth));
             enemy5X=random5;
             once=true;
 
-            if (lifeCounter==0)
-            {
-                Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
 
-                Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
-                gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                gameOverIntent.putExtra("score",score);
-
-                getContext().startActivity(gameOverIntent);
-
-            }
             green=false;
             duration++;
         }
         if(enemy6Y >canvasHeight+30)
         {
-            if(scorecheck!=score-10) {
-                lifeCounter--;
-
-            }
-            else  scorecheck += 10;
+//            if(scorecheck!=score-10) {
+//                lifeCounter--;
+//
+//            }
+//            else  scorecheck += 10;
 
             enemy6Y=0;
             int random6=(int)Math.floor(Math.random() *(canvasWidth));
             enemy6X=random6;
             once=true;
 
-            if (lifeCounter==0)
-            {
-                Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
 
-                Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
-                gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                gameOverIntent.putExtra("score",score);
-
-                getContext().startActivity(gameOverIntent);
-
-            }
             green=false;
             duration++;
         }
         if(enemy7Y >canvasHeight+30)
         {
-            if(scorecheck!=score-10) {
-                lifeCounter--;
-
-            }
-            else  scorecheck += 10;
+//            if(scorecheck!=score-10) {
+//                lifeCounter--;
+//
+//            }
+//            else  scorecheck += 10;
 
             enemy7Y=0;
             int random7=(int)Math.floor(Math.random() *(canvasWidth));
             enemy7X=random7;
             once=true;
 
-            if (lifeCounter==0)
-            {
-                Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
 
-                Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
-                gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                gameOverIntent.putExtra("score",score);
-
-                getContext().startActivity(gameOverIntent);
-
-            }
             green=false;
             duration++;
         }
@@ -581,9 +557,9 @@ class ViewEx2 extends View
                 enemy3X=random3;
                 enemyboolean3=false;
             }
-            enemy3Y=enemy3Y +enemy2Speed;
+            enemy3Y=enemy3Y +enemy3Speed;
             enemy3X=enemy3X +7;
-            common_canvas.drawCircle(enemy3X,enemy3Y,25,enemy3);
+//            common_canvas.drawCircle(enemy3X,enemy3Y,25,enemy3);
 
             if(enemyboolean4==true){
                 enemy4Y=0;
@@ -593,7 +569,42 @@ class ViewEx2 extends View
             }
             enemy4Y=enemy4Y +enemy4Speed;
             enemy4X=enemy4X -3;
-            common_canvas.drawCircle(enemy4X,enemy4Y,25,enemy4);
+//            common_canvas.drawCircle(enemy4X,enemy4Y,25,enemy4);
+
+            if(hitBallChecker(enemy3X,enemy3Y)){
+                lifeCounter--;
+                enemy3X=-200;
+                if (lifeCounter==0)
+                {
+                    Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
+
+                    Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
+                    gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    gameOverIntent.putExtra("score",score);
+
+                    getContext().startActivity(gameOverIntent);
+
+                }
+            }
+            common_canvas.drawBitmap(enemyicon3,enemy3X,enemy3Y,enemy3);
+
+            if(hitBallChecker(enemy4X,enemy4Y)){
+                lifeCounter--;
+                enemy4X=-200;
+                if (lifeCounter==0)
+                {
+                    Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
+
+                    Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
+                    gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    gameOverIntent.putExtra("score",score);
+
+                    getContext().startActivity(gameOverIntent);
+
+                }
+            }
+            common_canvas.drawBitmap(enemyicon4,enemy4X,enemy4Y,enemy4);
+
         }
         if(duration>5) {
             if(enemyboolean5==true){
@@ -602,9 +613,27 @@ class ViewEx2 extends View
                 enemy5X=random5;
                 enemyboolean5=false;
             }
-            enemy5Y=enemy5Y +enemy4Speed;
+            enemy5Y=enemy5Y +enemy5Speed;
             enemy5X=enemy5X -10;
-            common_canvas.drawCircle(enemy5X,enemy5Y,25,enemy5);
+//            common_canvas.drawCircle(enemy5X,enemy5Y,25,enemy5);
+
+
+            if(hitBallChecker(enemy5X,enemy5Y)){
+                lifeCounter--;
+                enemy5X=-200;
+                if (lifeCounter==0)
+                {
+                    Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
+
+                    Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
+                    gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    gameOverIntent.putExtra("score",score);
+
+                    getContext().startActivity(gameOverIntent);
+
+                }
+                common_canvas.drawBitmap(enemyicon5,enemy5X,enemy5Y,enemy5);
+            }
         }
         if(duration>7){
 
@@ -616,8 +645,24 @@ class ViewEx2 extends View
             }
             enemy6Y=enemy6Y -7;
             enemy6X=enemy6X +enemy6Speed;
-            common_canvas.drawCircle(enemy6X,enemy6Y,25,enemy6);
+//            common_canvas.drawCircle(enemy6X,enemy6Y,25,enemy6);
 
+            if(hitBallChecker(enemy6X,enemy6Y)){
+                lifeCounter--;
+                enemy6X=-200;
+                if (lifeCounter==0)
+                {
+                    Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
+
+                    Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
+                    gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    gameOverIntent.putExtra("score",score);
+
+                    getContext().startActivity(gameOverIntent);
+
+                }
+                common_canvas.drawBitmap(enemyicon6,enemy6X,enemy6Y,enemy6);
+            }
         }
         if (duration>11){
             if(enemyboolean7==true){
@@ -628,8 +673,24 @@ class ViewEx2 extends View
             }
             enemy7Y=enemy7Y +15;
             enemy7X=enemy7X -enemy7Speed;
-            common_canvas.drawCircle(enemy7X,enemy7Y,25,enemy7);
+//            common_canvas.drawCircle(enemy7X,enemy7Y,25,enemy7);
 
+            if(hitBallChecker(enemy7X,enemy7Y)){
+                lifeCounter--;
+                enemy7X=-200;
+                if (lifeCounter==0)
+                {
+                    Toast.makeText(getContext(),"Game over", Toast.LENGTH_SHORT).show();
+
+                    Intent gameOverIntent =new Intent(getContext(),GameOverActivity.class);
+                    gameOverIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    gameOverIntent.putExtra("score",score);
+
+                    getContext().startActivity(gameOverIntent);
+
+                }
+            }
+            common_canvas.drawBitmap(enemyicon7,enemy7X,enemy7Y,enemy7);
         }
     }
 

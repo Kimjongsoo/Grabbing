@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mycolor"
+    tools:context=".AvoidGameExplain">
+
+    <TextView
+        android:id="@+id/avoid_explain_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
+        android:text="피하기게임 방법"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        />
+
+    <ImageView
+        android:id="@+id/game"
+        android:layout_marginTop="100dp"
+        android:layout_width="300dp"
+        android:layout_height="280dp"
+        android:layout_centerHorizontal="true"
+        android:padding="0sp"
+        android:scaleType="fitXY"
+        android:src="@drawable/avoidgamepic" />
+
+
+    <TextView
+        android:id="@+id/explain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="400dp"
+        android:text="Grabbing을 수평으로 놓고 원하는방향으로 기울여서 조종하세요"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        />
+
+    <Button
+        android:id="@+id/avoidgmaeexplain_to_mainpage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="500dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_shape2"
+        android:text="메인화면"
+        android:textColor="@android:color/background_light" />
+
+    <Button
+        android:id="@+id/avoid_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="500dp"
+        android:layout_marginLeft="250dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_shape2"
+        android:text="Start"
+        android:textColor="@android:color/background_light" />
+
+</RelativeLayout>

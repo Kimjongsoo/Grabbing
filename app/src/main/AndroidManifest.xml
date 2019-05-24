@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,8 @@
         <activity android:name=".RhythmExplain1" />
         <activity android:name=".RhythmExplain2" />
         <activity android:name=".RhythmExplain3" />
-        <activity android:name=".AvoidGame"></activity>
+        <activity android:name=".AvoidGame" />
+        <activity android:name=".AvoidGameExplain"></activity>
     </application>
 
 </manifest>
